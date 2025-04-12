@@ -1,12 +1,7 @@
-FROM python:3.10-slim
-
+FROM python:3.8
 WORKDIR /app
-
-COPY . .
-
-RUN pip install -r requirements.txt
-RUN pip install pytest
-
-EXPOSE 5000
-
-CMD ["python", "app.py"]
+COPY . /app
+RUN pip install flask
+EXPOSE 8080
+ENTRYPOINT ["python"]
+CMD ["app.py"]
