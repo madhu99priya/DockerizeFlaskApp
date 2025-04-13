@@ -1,7 +1,24 @@
-FROM python:3.8
+# Use a lighter image with Python 3.8
+FROM python:3.8-slim
+
+# Set working directory
 WORKDIR /app
-COPY . /app
-RUN pip install flask
+
+# Copy dependency file first to leverage Docker layer caching
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the app
+COPY . .
+
+# Set environment variables (optional)
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=8080
+
+# Expose the port for the app
 EXPOSE 8080
-ENTRYPOINT ["python"]
-CMD ["app.py"]
+
+# Run the app
+CMD ["python", "app.py"]
